@@ -1,0 +1,93 @@
+mql5
+//+------------------------------------------------------------------+
+//|                                   Lock Profit EA                  |
+//|                                           forexroboteasy.com      |
+//|                                      Developed by Forex Robot Easy Team |
+//|                                              Version: 1.0         |
+//+------------------------------------------------------------------+
+//|                                                                  |
+//|                     Terms of Reference                            |
+//|                                                                  |
+//| Writing Code for Lock Profit EA                                   |
+//|                                                                  |
+//|------------------------------------------------------------------|
+//| 1. Develop code for Lock Profit EA, a sophisticated forex trading |
+//|    tool.                                                         |
+//| 2. Implement multiple strategies, indicators, and filters for     |
+//|    comprehensive forex market analysis.                           |
+//| 3. Include advanced forex strategies such as Moving Average (MA), |
+//|    Relative Strength Index (RSI), Commodity Channel Index (CCI),  |
+//|    Moving Average Convergence Divergence (MACD), Stochastic, and  |
+//|    Parabolic SAR.                                                |
+//| 4. Allow traders to toggle on/off indicators based on their       |
+//|    preferences and market conditions.                            |
+//| 5. Incorporate multi-filters such as MaxSpread and MaxLot to      |
+//|    optimize trades and manage risks effectively.                  |
+//| 6. Provide automated and manual trading options for user          |
+//|    flexibility.                                                  |
+//| 7. Ensure the code is efficient, reliable, and performs all       |
+//|    required trading functions accurately.                        |
+//| 8. Develop an algorithm that executes trades based on the         |
+//|    selected strategies, indicators, and filters.                  |
+//| 9. Implement proper error handling and exception management to    |
+//|    prevent system crashes and ensure smooth operation.            |
+//| 10. Consider user-friendly interfaces and provide clear           |
+//|     instructions for users to navigate and utilize the software   |
+//|     effectively.                                                 |
+//| 11. Test the code thoroughly to identify and fix any potential    |
+//|     bugs or issues.                                               |
+//| 12. Ensure the code is well-documented, with clear comments       |
+//|     explaining the purpose and functionality of each section.     |
+//| 13. Deliver the code within the specified timeframe and provide  |
+//|     ongoing support for any necessary updates or enhancements.   |
+//|                                                                  |
+//+------------------------------------------------------------------+
+
+// Your code goes here...
+
+// Example function demonstrating the use of a Moving Average strategy
+
+//+------------------------------------------------------------------+
+//| Calculate Moving Average                                          |
+//+------------------------------------------------------------------+
+double CalculateMovingAverage(int period)
+{
+   double sum = 0;
+   for(int i = 0; i < period; i++)
+   {
+      sum += iClose(NULL, 0, i);
+   }
+   return sum / period;
+}
+
+//+------------------------------------------------------------------+
+//| Check Moving Average Strategy                                     |
+//+------------------------------------------------------------------+
+bool CheckMovingAverageStrategy(int period)
+{
+   double ma = CalculateMovingAverage(period);
+   double currentPrice = iClose(NULL, 0, 0);
+
+   if(currentPrice > ma)
+      return true;
+   else
+      return false;
+}
+
+//+------------------------------------------------------------------+
+//| Main Expert Advisor function                                      |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   // Check Moving Average strategy with a period of 20
+   if(CheckMovingAverageStrategy(20))
+   {
+      // Execute Buy trade
+      OrderSend(Symbol(), OP_BUY, 1, Ask, 0, 0, 0, 'Lock Profit EA', 0, 0, CLR_NONE);
+   }
+   else
+   {
+      // Execute Sell trade
+      OrderSend(Symbol(), OP_SELL, 1, Bid, 0, 0, 0, 'Lock Profit EA', 0, 0, CLR_NONE);
+   }
+}
